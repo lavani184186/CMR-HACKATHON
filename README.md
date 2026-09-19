@@ -121,7 +121,6 @@ ORGANIZER UPLOADS DATASET PACKAGE
               ▼
        ┌───────────────┐
        │   FRONTEND    │
-       │ Upload files  │
        └───────┬───────┘
                │
                ▼
