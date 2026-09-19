@@ -113,73 +113,80 @@ trafficsetu/
 └── README.md
 ```
 
-## 5. System Architecture
+## 5. ## System Architecture
 
 ```text
-                         ORGANIZER DATA
-                               │
-                    ┌──────────┴──────────┐
-                    │                     │
-              Traffic Data          Road Network
-                    │                     │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   DATA PROCESSING   │
-                    │                     │
-                    │ • Cleaning          │
-                    │ • Missing Values    │
-                    │ • Feature Creation  │
-                    └──────────┬──────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-              ▼                ▼                ▼
-       ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
-       │ Congestion  │  │  Anomaly    │  │  Incident   │
-       │  Detection  │  │  Detection  │  │  Detection  │
-       └──────┬──────┘  └──────┬──────┘  └──────┬──────┘
-              │                │                │
-              └────────────────┼────────────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │     FORECASTING     │
-                    │                     │
-                    │    15 / 30 / 45 /  │
-                    │        60 min       │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │    DECISION ENGINE  │
-                    └──────────┬──────────┘
-                               │
-                    ┌──────────┴──────────┐
-                    │                     │
-                    ▼                     ▼
-          ┌──────────────────┐   ┌────────────────────┐
-          │ Diversion        │   │ Bottleneck         │
-          │ Advisory         │   │ Analysis            │
-          └──────────────────┘   └─────────┬──────────┘
-                                           │
-                                           ▼
-                                  ┌────────────────────┐
-                                  │ What-if Simulation  │
-                                  └─────────┬──────────┘
-                                            │
-                                            ▼
-                                  ┌────────────────────┐
-                                  │   Before / After   │
-                                  └─────────┬──────────┘
-                                            │
-                                            ▼
-                                  ┌────────────────────┐
-                                  │     DASHBOARD      │
-                                  └────────────────────┘
+ORGANIZER UPLOADS DATASET PACKAGE
+              │
+              ▼
+       ┌───────────────┐
+       │   FRONTEND    │
+       │ Upload files  │
+       └───────┬───────┘
+               │
+               ▼
+       ┌───────────────┐
+       │    BACKEND    │
+       │ File handling │
+       └───────┬───────┘
+               │
+               ▼
+        LAYER 1
+      DATA PROCESSING
+               │
+      ┌────────┼─────────┐
+      ▼        ▼         ▼
+   Traffic   Network   Context
+      │        │         │
+      └────────┼─────────┘
+               │
+               ▼
+        LAYER 2
+   TRAFFIC INTELLIGENCE
+               │
+       ┌───────┴────────┐
+       ▼                ▼
+  Current traffic    Forecasting
+                     15–60 min
+                         │
+                    LightGBM/
+                     XGBoost
+                         │
+                         ▼
+                  Future traffic
+               │
+               ▼
+        LAYER 3
+   NETWORK UNDERSTANDING
+               │
+       Network + demand
+       + restrictions
+       + signals
+               │
+               ▼
+      Propagation analysis
+               │
+               ▼
+        LAYER 4
+    DECISION SUPPORT
+               │
+               ▼
+       Diversion/
+       traffic advisory
+               │
+               ▼
+        LAYER 5
+   BOTTLENECK + SIMULATION
+               │
+       Planning candidates
+               │
+               ▼
+       Before / After
+         comparison
+               │
+               ▼
+          DASHBOARD
 ```
-
 
 ## 6. @License
 This project is developed for NEURAX HACKATHON 3.0.
