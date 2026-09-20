@@ -9,17 +9,18 @@ import {
   Filler,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-import { forecastData } from '../data/mockData'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler)
 
-function ForecastChart() {
+function ForecastChart({ forecast }) {
+  if (!forecast || forecast.length === 0) return null
+
   const data = {
-    labels: forecastData.labels,
+    labels: forecast.map((p) => p.label),
     datasets: [
       {
         label: 'Congestion Index',
-        data: forecastData.values,
+        data: forecast.map((p) => p.value),
         borderColor: '#10b981',
         backgroundColor: 'rgba(16, 185, 129, 0.1)',
         fill: true,
@@ -37,9 +38,7 @@ function ForecastChart() {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      title: {
-        display: false,
-      },
+      title: { display: false },
       tooltip: {
         backgroundColor: '#1e293b',
         titleColor: '#e2e8f0',
@@ -54,19 +53,13 @@ function ForecastChart() {
     },
     scales: {
       x: {
-        grid: {
-          color: 'rgba(148, 163, 184, 0.1)',
-        },
-        ticks: {
-          color: '#94a3b8',
-        },
+        grid: { color: 'rgba(148, 163, 184, 0.1)' },
+        ticks: { color: '#94a3b8' },
       },
       y: {
         min: 0,
         max: 100,
-        grid: {
-          color: 'rgba(148, 163, 184, 0.1)',
-        },
+        grid: { color: 'rgba(148, 163, 184, 0.1)' },
         ticks: {
           color: '#94a3b8',
           callback: (value) => value + '%',
@@ -80,6 +73,7 @@ function ForecastChart() {
       <div className="card-section-header">
         <span className="section-icon">📈</span>
         <h2>Traffic Forecast</h2>
+        <span className="ml-badge">ML-Powered</span>
       </div>
       <div className="chart-container">
         <Line data={data} options={options} />

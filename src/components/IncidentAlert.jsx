@@ -1,6 +1,6 @@
-import { incidentData } from '../data/mockData'
+function IncidentAlert({ incident }) {
+  if (!incident) return null
 
-function IncidentAlert() {
   return (
     <div className="card incident-card">
       <div className="card-section-header">
@@ -12,19 +12,11 @@ function IncidentAlert() {
         <div className="incident-detail">
           <div className="incident-row">
             <span className="incident-label">Segment</span>
-            <span className="incident-value">{incidentData.segment}</span>
-          </div>
-          <div className="incident-row">
-            <span className="incident-label">Location</span>
-            <span className="incident-value">{incidentData.location}</span>
+            <span className="incident-value">{incident.segment}</span>
           </div>
           <div className="incident-row">
             <span className="incident-label">Type</span>
-            <span className="incident-value">{incidentData.type}</span>
-          </div>
-          <div className="incident-row">
-            <span className="incident-label">Detected</span>
-            <span className="incident-value">{incidentData.timestamp}</span>
+            <span className="incident-value">{incident.type}</span>
           </div>
         </div>
         <div className="confidence-meter">
@@ -33,18 +25,14 @@ function IncidentAlert() {
             <svg viewBox="0 0 100 100" className="confidence-svg">
               <circle cx="50" cy="50" r="40" fill="none" stroke="#1e293b" strokeWidth="8" />
               <circle
-                cx="50"
-                cy="50"
-                r="40"
-                fill="none"
-                stroke="#ef4444"
-                strokeWidth="8"
-                strokeDasharray={`${incidentData.confidence * 2.51} 251`}
+                cx="50" cy="50" r="40" fill="none"
+                stroke="#ef4444" strokeWidth="8"
+                strokeDasharray={`${incident.confidence * 2.51} 251`}
                 strokeLinecap="round"
                 transform="rotate(-90 50 50)"
               />
             </svg>
-            <span className="confidence-value">{incidentData.confidence}%</span>
+            <span className="confidence-value">{incident.confidence}%</span>
           </div>
         </div>
       </div>

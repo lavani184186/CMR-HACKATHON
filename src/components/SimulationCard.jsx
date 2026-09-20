@@ -1,8 +1,31 @@
 import { useState } from 'react'
-import { simulationData } from '../data/mockData'
+import { simulate } from '../data/api'
 
-function SimulationCard() {
+function SimulationCard({ simulation, route, placeId }) {
   const [simulated, setSimulated] = useState(false)
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  const before = simulation?.before ?? 82
+  const after = result?.after ?? simulation?.after ?? 61
+  const improvement = before - after
+  const displayRoute = result?.route ?? route
+
+  async function handleSimulate() {
+    setLoading(true)
+    // Try backend first
+    const apiResult = await simulate(placeId)
+    if (apiResult && !apiResult.error) {
+      setResult(apiResult)
+    }
+    setSimulated(true)
+    setLoading(false)
+  }
+
+  function handleReset() {
+    setSimulated(false)
+    setResult(null)
+  }
 
   return (
     <div className="card simulation-card">
@@ -17,21 +40,21 @@ function SimulationCard() {
             <div className="sim-bar-track">
               <div
                 className="sim-bar-fill before"
-                style={{ width: `${simulationData.before}%` }}
+                style={{ width: `${before}%` }}
               ></div>
             </div>
-            <span className="sim-bar-value">{simulationData.before}%</span>
+            <span className="sim-bar-value">{before}%</span>
           </div>
           <div className="sim-bar-group">
             <div className="sim-bar-label">After Diversion</div>
             <div className="sim-bar-track">
               <div
                 className="sim-bar-fill after"
-                style={{ width: simulated ? `${simulationData.after}%` : '0%' }}
+                style={{ width: simulated ? `${after}%` : '0%' }}
               ></div>
             </div>
             <span className="sim-bar-value">
-              {simulated ? `${simulationData.after}%` : '—'}
+              {simulated ? `${after}%` : '—'}
             </span>
           </div>
         </div>
@@ -40,16 +63,17 @@ function SimulationCard() {
             <div className="sim-result">
               <span className="sim-result-icon">✅</span>
               <span>
-                Diverting via <strong>{simulationData.route}</strong> reduces congestion by{' '}
-                <strong>{simulationData.improvement}%</strong>
+                Diverting via <strong>{displayRoute}</strong> reduces congestion by{' '}
+                <strong>{improvement}%</strong>
               </span>
             </div>
           )}
           <button
             className="sim-button"
-            onClick={() => setSimulated(!simulated)}
+            onClick={simulated ? handleReset : handleSimulate}
+            disabled={loading}
           >
-            {simulated ? 'Reset Simulation' : 'Simulate Diversion'}
+            {loading ? 'Running...' : simulated ? 'Reset Simulation' : 'Simulate Diversion'}
           </button>
         </div>
       </div>

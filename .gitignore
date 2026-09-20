@@ -22,3 +22,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.env
+# Python
+__pycache__/
+*.pyc
+
+# NEURAX dataset
+backend/data/
+
+# Environment variables
+.env
+*.env
+
+# Node
+node_modules/
+dist/

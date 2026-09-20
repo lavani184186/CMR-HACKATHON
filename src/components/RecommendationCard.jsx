@@ -1,6 +1,6 @@
-import { recommendationData } from '../data/mockData'
+function RecommendationCard({ recommendation }) {
+  if (!recommendation) return null
 
-function RecommendationCard() {
   return (
     <div className="card recommendation-card">
       <div className="card-section-header">
@@ -11,18 +11,14 @@ function RecommendationCard() {
         <div className="recommendation-action">
           <div className="action-icon">↗️</div>
           <div>
-            <h3>{recommendationData.action}</h3>
-            <p>{recommendationData.reason}</p>
+            <h3>Divert traffic through Route {recommendation.route}</h3>
+            <p>{recommendation.reason}</p>
           </div>
         </div>
         <div className="recommendation-stats">
           <div className="rec-stat">
             <span className="rec-stat-label">Confidence</span>
-            <span className="rec-stat-value">{recommendationData.confidence}%</span>
-          </div>
-          <div className="rec-stat">
-            <span className="rec-stat-label">Est. Impact</span>
-            <span className="rec-stat-value">{recommendationData.estimatedImpact}</span>
+            <span className="rec-stat-value">{recommendation.confidence}%</span>
           </div>
         </div>
       </div>
